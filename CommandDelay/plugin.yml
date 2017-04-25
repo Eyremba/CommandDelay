@@ -1,0 +1,11 @@
+name: CommandDelay
+author: Enrico
+version: 0.0.3
+main: me.onenrico.commanddelay.main.Core
+description: Command Delay Solution
+softdepend: [Vault]
+commands:
+  commanddelay:
+    description: Command for CommandDelay plugin
+    usage: /commanddelay help
+    aliases: cd
