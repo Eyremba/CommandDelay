@@ -87,6 +87,7 @@ message_chat_delaying_canceled: "{themecolor}&lCommand /{cmd} Aborted"
 message_chat_dispatched: "{themecolor}&lCommand /{cmd} Success"
 
 #=====-----=====-----=====-----[       Messages       ]-----=====-----=====-----=====#
+message_prefix: "&8[&dCommandDelay&8]"
 message_command_nomoney: "&cYou Don't Have Enough Money"
 message_command_reload: "&6Config Successfully Reloaded"
 message_command_nopermission: "You Don't Have &8[&f{perm}&8] &cPermission !"
@@ -112,3 +113,7 @@ themecolor:
 
 flatcolor:
 - "&f"
+
+#=====-----=====-----=====-----[    Other  Feature    ]-----=====-----=====-----=====#
+use_hologram: true
+use_particle: true

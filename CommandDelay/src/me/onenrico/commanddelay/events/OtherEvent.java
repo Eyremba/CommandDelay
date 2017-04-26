@@ -38,11 +38,26 @@ public class OtherEvent implements Listener {
 				if (blacklist == null) {
 					List<String> commands = ca.getCommands();
 					for (String c : commands) {
-						if (ce.toLowerCase().startsWith(c)) {
+						Boolean pass = false;
+						String ceb = ce.toLowerCase().split(" ")[0];
+						if (!c.contains(" ")) {
+							if (ceb.equals(c)) {
+								pass = true;
+							}
+						} else {
+							pass = true;
+							for (String co : c.toLowerCase().split(" ")) {
+								if (!co.equals(ceb)) {
+									pass = false;
+								}
+							}
+						}
+						if (pass) {
 							DelayUT.Delayed(player, ca.getDelay(), ce, ca.getCost());
 							event.setCancelled(true);
 							return;
 						}
+
 					}
 				} else if (blacklist.equalsIgnoreCase("true")) {
 					for (String world : ca.getWorlds()) {
@@ -51,19 +66,48 @@ public class OtherEvent implements Listener {
 						}
 						List<String> commands = ca.getCommands();
 						for (String c : commands) {
-							if (ce.toLowerCase().startsWith(c)) {
+							Boolean pass = false;
+							String ceb = ce.toLowerCase().split(" ")[0];
+							if (!c.contains(" ")) {
+								if (ceb.equals(c)) {
+									pass = true;
+								}
+							} else {
+								pass = true;
+								for (String co : c.toLowerCase().split(" ")) {
+									if (!co.equals(ceb)) {
+										pass = false;
+									}
+								}
+							}
+							if (pass) {
 								DelayUT.Delayed(player, ca.getDelay(), ce, ca.getCost());
 								event.setCancelled(true);
 								return;
 							}
 						}
+
 					}
 				} else if (blacklist.equalsIgnoreCase("false")) {
 					for (String world : ca.getWorlds()) {
 						if (cworld.equals(world)) {
 							List<String> commands = ca.getCommands();
 							for (String c : commands) {
-								if (ce.toLowerCase().startsWith(c)) {
+								Boolean pass = false;
+								String ceb = ce.toLowerCase().split(" ")[0];
+								if (!c.contains(" ")) {
+									if (ceb.equals(c)) {
+										pass = true;
+									}
+								} else {
+									pass = true;
+									for (String co : c.toLowerCase().split(" ")) {
+										if (!co.equals(ceb)) {
+											pass = false;
+										}
+									}
+								}
+								if (pass) {
 									DelayUT.Delayed(player, ca.getDelay(), ce, ca.getCost());
 									event.setCancelled(true);
 									return;

@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import me.onenrico.commanddelay.config.ConfigPlugin;
+import me.onenrico.commanddelay.locale.Locales;
 import me.onenrico.commanddelay.main.Core;
 import me.onenrico.commanddelay.nms.actionbar.ActionBar;
 import me.onenrico.commanddelay.nms.titlebar.TitleBar;
@@ -198,5 +199,5 @@ public class MessageUT {
 	}
 	// TITLEBAR MESSAGE
 
-	public static final String pluginPrefix = "&8&l[&dCommandDelay&8&l] ";
+	public static final String pluginPrefix = Locales.get("message_prefix", "&8[&dCommandDelay&8]");
 }

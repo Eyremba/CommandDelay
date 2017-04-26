@@ -5,8 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import me.onenrico.commanddelay.config.ConfigPlugin;
 import me.onenrico.commanddelay.events.OtherEvent;
@@ -78,8 +83,9 @@ public class DelayUT {
 	}
 
 	public static List<String> themeColor = ConfigPlugin.getConfig().getStringList("themecolor");
-	public static List<String> flatColor = ConfigPlugin.getConfig().getStringList("themecolor");
-
+	public static List<String> flatColor = ConfigPlugin.getConfig().getStringList("flatcolor");
+	private static int themeRequest = 0;
+	private static int flatRequest = 0;
 	private static HashMap<String, String> listPlaceholder = new HashMap<>();
 
 	public static void refreshString(String flat, String theme, int leftInt, Player player, String command) {
@@ -119,6 +125,7 @@ public class DelayUT {
 	}
 
 	public static void Delayed(Player player, int cooldown, String cmd, double cost) {
+		Boolean useH = Locales.getBool("use_hologram", true);
 		if (!EconomyUT.has(player, cost)) {
 			MessageUT.plmessage(player, Locales.message_command_nomoney, true);
 			SoundManager.playSound(player, "ENTITY_BLAZE_DEATH", player.getLocation(), 5f, 25f);
@@ -129,9 +136,30 @@ public class DelayUT {
 		int totalBar = 18;
 		player.setMetadata("CDelay:Teleporting", MetaUT.createMetadata(true));
 		SoundManager.playSound(player, "ENTITY_ENDERMEN_TELEPORT", player.getLocation(), 1f, -50f);
+		BukkitTask particle = ParticleUT.helixParticle(player, 0, 0.6f);
+		ArmorStand holo = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().clone().add(0, 10, 0),
+				EntityType.ARMOR_STAND);
+		ArmorStand holo2 = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().clone().add(0, 10, 0),
+				EntityType.ARMOR_STAND);
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				holo.teleport(player.getLocation().clone().add(0, 0.7, 0));
+				holo.setGravity(false);
+				holo.setCustomName(MessageUT.t("&a&l" + cooldown));
+				holo.setVisible(false);
+				holo2.teleport(player.getLocation().clone().add(0, 0.9, 0));
+				holo2.setGravity(false);
+				holo2.setCustomName(MessageUT.t("&f&l/" + cmd.split(" ")[0]));
+				holo2.setVisible(false);
+				if (useH) {
+					holo.setCustomNameVisible(true);
+					holo2.setCustomNameVisible(true);
+				}
+			}
+		}.runTaskLater(Core.getThis(), 1);
 		BukkitRunnable task = new BukkitRunnable() {
 			int updateMin = min + 1;
-			Random random = new Random();
 			String theme = null;
 			String flat = null;
 			int update = 1;
@@ -151,12 +179,23 @@ public class DelayUT {
 					current = 0;
 				}
 				if (theme == null) {
-					theme = themeColor.get(random.nextInt(themeColor.size()));
-					flat = flatColor.get(random.nextInt(flatColor.size()));
+					themeRequest++;
+					flatRequest++;
+					if (themeRequest >= themeColor.size()) {
+						themeRequest = 0;
+					}
+					if (flatRequest >= flatColor.size()) {
+						flatRequest = 0;
+					}
+					theme = themeColor.get(themeRequest);
+					flat = flatColor.get(flatRequest);
 				}
 				varUpdate();
 				refreshString(flat, theme, updateMin, player, cmd);
-				if (updateMin == -1) {
+				if (holo.isValid()) {
+					holo.setCustomName(MessageUT.t("&a&l" + updateMin));
+				}
+				if (updateMin <= 0) {
 					cancel();
 					Core.getThis();
 					EconomyUT.subtractBal(player, cost);
@@ -176,7 +215,13 @@ public class DelayUT {
 					if (actionbar) {
 						MessageUT.acmessage(player, message_actionbar_dispatched);
 					}
-
+					particle.cancel();
+					if (holo.isValid()) {
+						holo.remove();
+					}
+					if (holo2.isValid()) {
+						holo2.remove();
+					}
 					// The Command
 					OtherEvent.delayed.add(player);
 					Bukkit.getServer().dispatchCommand(player, cmd);
@@ -219,10 +264,21 @@ public class DelayUT {
 					cancelTeleport(player);
 					cancel();
 					task.cancel();
+					particle.cancel();
+					if (holo.isValid()) {
+						holo.remove();
+					}
+					if (holo2.isValid()) {
+						holo2.remove();
+					}
 					return;
 				}
 				if (!MetaUT.isThere(player, "CDelay:Teleporting")) {
-					theme = themeColor.get(random.nextInt(themeColor.size()));
+					themeRequest++;
+					if (themeRequest > themeColor.size()) {
+						themeRequest = 0;
+					}
+					theme = themeColor.get(themeRequest);
 					String flat = flatColor.get(random.nextInt(flatColor.size()));
 					refreshString(flat, theme, 0, player, cmd);
 					if (chat) {
@@ -237,6 +293,13 @@ public class DelayUT {
 					}
 					SoundManager.playSound(player, "ENTITY_BLAZE_DEATH", player.getLocation(), 1f, 60f);
 					cancel();
+					particle.cancel();
+					if (holo.isValid()) {
+						holo.remove();
+					}
+					if (holo2.isValid()) {
+						holo2.remove();
+					}
 					task.cancel();
 					return;
 				}

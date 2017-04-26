@@ -56,6 +56,7 @@ public class ConfigPlugin {
 		if (config.getString(path) == null) {
 			config.set(path, def);
 			changed = true;
+			Core.getThis().saveConfig();
 		}
 		return MessageUT.t(config.getString(path, def));
 	}

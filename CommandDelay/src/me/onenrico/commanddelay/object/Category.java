@@ -13,12 +13,12 @@ public class Category {
 	private List<String> commands = new ArrayList<>();
 
 	public Category(String path) {
-		String pref = "category.";
-		cost = ConfigPlugin.getConfig().getDouble(pref + path + ".cost");
-		delay = ConfigPlugin.getConfig().getInt(pref + path + ".delay");
-		blacklist = ConfigPlugin.getConfig().getString(pref + path + ".blacklist");
-		worlds = ConfigPlugin.getConfig().getStringList(pref + path + ".worlds");
-		commands = ConfigPlugin.getConfig().getStringList(pref + path + ".commands");
+		String pref = "category." + path + ".";
+		cost = ConfigPlugin.getConfig().getDouble(pref + "cost");
+		delay = ConfigPlugin.getConfig().getInt(pref + "delay");
+		blacklist = ConfigPlugin.getConfig().getString(pref + "blacklist");
+		worlds = ConfigPlugin.getConfig().getStringList(pref + "worlds");
+		commands = ConfigPlugin.getConfig().getStringList(pref + "commands");
 	}
 
 	public double getCost() {
@@ -39,5 +39,25 @@ public class Category {
 
 	public List<String> getCommands() {
 		return commands;
+	}
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+
+	public void setBlacklist(String blacklist) {
+		this.blacklist = blacklist;
+	}
+
+	public void setWorlds(List<String> worlds) {
+		this.worlds = worlds;
+	}
+
+	public void setCommands(List<String> commands) {
+		this.commands = commands;
 	}
 }
