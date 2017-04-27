@@ -125,17 +125,16 @@ public class DelayUT {
 	}
 
 	public static void Delayed(Player player, int cooldown, String cmd, double cost) {
-		Boolean useH = Locales.getBool("use_hologram", true);
 		if (!EconomyUT.has(player, cost)) {
 			MessageUT.plmessage(player, Locales.message_command_nomoney, true);
-			SoundManager.playSound(player, "ENTITY_BLAZE_DEATH", player.getLocation(), 5f, 25f);
+			SoundManager.playSound(player, Locales.sound_error, player.getLocation(), 5f, 25f);
 			return;
 		}
 		int min = cooldown;
 		int max = min;
 		int totalBar = 18;
 		player.setMetadata("CDelay:Teleporting", MetaUT.createMetadata(true));
-		SoundManager.playSound(player, "ENTITY_ENDERMEN_TELEPORT", player.getLocation(), 1f, -50f);
+		SoundManager.playSound(player, Locales.sound_success, player.getLocation(), 1f, -50f);
 		BukkitTask particle = ParticleUT.helixParticle(player, 0, 0.6f);
 		ArmorStand holo = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().clone().add(0, 10, 0),
 				EntityType.ARMOR_STAND);
@@ -144,6 +143,7 @@ public class DelayUT {
 		new BukkitRunnable() {
 			@Override
 			public void run() {
+				final Boolean useH = Locales.getBool("use_hologram", true);
 				holo.teleport(player.getLocation().clone().add(0, 0.7, 0));
 				holo.setGravity(false);
 				holo.setCustomName(MessageUT.t("&a&l" + cooldown));
@@ -157,7 +157,7 @@ public class DelayUT {
 					holo2.setCustomNameVisible(true);
 				}
 			}
-		}.runTaskLater(Core.getThis(), 1);
+		}.runTaskLater(Core.getThis(), 2);
 		BukkitRunnable task = new BukkitRunnable() {
 			int updateMin = min + 1;
 			String theme = null;
@@ -199,10 +199,8 @@ public class DelayUT {
 					cancel();
 					Core.getThis();
 					EconomyUT.subtractBal(player, cost);
-					SoundManager.playSound(player, "ENTITY_ENDERMEN_TELEPORT", player.getLocation(), 1f, 50f);
-					SoundManager.playSound(player, "ENTITY_ENDERMEN_TELEPORT", player.getLocation(), 1f, 40f);
-					SoundManager.playSound(player, "ENTITY_ENDERMEN_TELEPORT", player.getLocation(), 1f, 20f);
-					SoundManager.playSound(player, "ENTITY_ENDERMEN_TELEPORT", player.getLocation(), 1f, 10f);
+					SoundManager.playSound(player, Locales.sound_success, player.getLocation(), 1f, 50f);
+					SoundManager.playSound(player, Locales.sound_success, player.getLocation(), 1f, 40f);
 					refreshString(flat, theme, updateMin, player, cmd);
 					MessageUT.acmessage(player, "");
 					if (titlebar) {
@@ -246,7 +244,7 @@ public class DelayUT {
 									ConfigPlugin.getConfig().getBoolean("message_actionbar_reverse"), theme, flat)
 									+ "&r " + message_actionbar_cooldown);
 				}
-				SoundManager.playSound(player, "ENTITY_ITEM_PICKUP", player.getLocation(), 1f, 29f);
+				SoundManager.playSound(player, Locales.sound_tick, player.getLocation(), 1f, 29f);
 			}
 
 		};
@@ -275,7 +273,7 @@ public class DelayUT {
 				}
 				if (!MetaUT.isThere(player, "CDelay:Teleporting")) {
 					themeRequest++;
-					if (themeRequest > themeColor.size()) {
+					if (themeRequest >= themeColor.size()) {
 						themeRequest = 0;
 					}
 					theme = themeColor.get(themeRequest);
@@ -291,7 +289,7 @@ public class DelayUT {
 					if (actionbar) {
 						MessageUT.acmessage(player, "");
 					}
-					SoundManager.playSound(player, "ENTITY_BLAZE_DEATH", player.getLocation(), 1f, 60f);
+					SoundManager.playSound(player, Locales.sound_error, player.getLocation(), 1f, 60f);
 					cancel();
 					particle.cancel();
 					if (holo.isValid()) {

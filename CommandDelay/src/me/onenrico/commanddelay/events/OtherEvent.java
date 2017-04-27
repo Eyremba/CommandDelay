@@ -45,11 +45,8 @@ public class OtherEvent implements Listener {
 								pass = true;
 							}
 						} else {
-							pass = true;
-							for (String co : c.toLowerCase().split(" ")) {
-								if (!co.equals(ceb)) {
-									pass = false;
-								}
+							if(ce.startsWith(c)) {
+								pass = true;
 							}
 						}
 						if (pass) {
@@ -73,11 +70,8 @@ public class OtherEvent implements Listener {
 									pass = true;
 								}
 							} else {
-								pass = true;
-								for (String co : c.toLowerCase().split(" ")) {
-									if (!co.equals(ceb)) {
-										pass = false;
-									}
+								if(ce.startsWith(c)) {
+									pass = true;
 								}
 							}
 							if (pass) {
@@ -100,11 +94,8 @@ public class OtherEvent implements Listener {
 										pass = true;
 									}
 								} else {
-									pass = true;
-									for (String co : c.toLowerCase().split(" ")) {
-										if (!co.equals(ceb)) {
-											pass = false;
-										}
+									if(ce.startsWith(c)) {
+										pass = true;
 									}
 								}
 								if (pass) {

@@ -90,15 +90,15 @@ public class ParticleUT {
 				}
 				Location loc = player.getLocation().add(0, 3.2, 0);
 				angle = Math.toRadians(cool += 9); // note that here we do have
-													// to convert to radians.
+				// to convert to radians.
 				AxisCos2 = Math.cos(-angle); // getting the cos value for the
-												// pitch.
+				// pitch.
 				AxisSin2 = Math.sin(-angle); // getting the sin value for the
-												// pitch.
+				// pitch.
 				AxisCos = Math.cos(angle); // getting the cos value for the
-											// pitch.
+				// pitch.
 				AxisSin = Math.sin(angle); // getting the sin value for the
-											// pitch.]
+				// pitch.]
 				for (double a = 0; a < Math.PI * 2; a += Math.PI / (20 * radius)) {
 					x = Math.cos(a) * (radius);
 					z = Math.sin(a) * (radius);
@@ -109,10 +109,18 @@ public class ParticleUT {
 					if (times == 15) {
 						if (++count >= Math.ceil((20 * radius) / 5)) {
 							count = 0;
-							send(player, "FIREWORKS_SPARK", loc, 0f, 0f, 0f, 0f, 1, true);
+							try {
+								send(player, Locales.particle_second.toUpperCase(), loc, 0f, 0f, 0f, 0f, 0, true);
+							}catch(Exception ex) {
+								send(player, "FIREWORKS_SPARK".toUpperCase(), loc, 0f, 0f, 0f, 0f, 0, true);
+							}
 						}
 					}
-					send(player, "REDSTONE".toUpperCase(), loc, 0f, 0.1f, 0f, 0f, 0, true);
+					try {
+						send(player, Locales.particle_main.toUpperCase(), loc, 0f, 0f, 0f, 0f, 0, true);
+					}catch(Exception ex) {
+						send(player, "REDSTONE".toUpperCase(), loc, 0f, 0f, 0f, 0f, 0, true);
+					}
 					loc.subtract(vec);
 				}
 				if (times == 15) {

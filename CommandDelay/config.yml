@@ -117,3 +117,13 @@ flatcolor:
 #=====-----=====-----=====-----[    Other  Feature    ]-----=====-----=====-----=====#
 use_hologram: true
 use_particle: true
+
+#=====-----=====-----=====-----[    Sound Config     ]-----=====-----=====-----=====#
+sound_error: "ENTITY_BLAZE_DEATH"
+sound_tick: "UI_BUTTON_CLICK"
+sound_success: "ENTITY_ENDERMEN_TELEPORT"
+
+#=====-----=====-----=====-----[    Particle Config     ]-----=====-----=====-----=====#
+particle_main: "SNOW_SHOVEL"
+particle_second: "FIREWORKS_SPARK"
+
